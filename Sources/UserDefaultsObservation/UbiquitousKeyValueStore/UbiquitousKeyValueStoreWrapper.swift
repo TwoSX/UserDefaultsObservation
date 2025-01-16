@@ -49,24 +49,28 @@ public struct UbiquitousKeyValueStoreWrapper<Value> {
     where Value: RawRepresentable, Value.RawValue: UserDefaultsPropertyListValue
     {
         NSUbiquitousKeyValueStore.default.set(newValue.rawValue, forKey: key)
+        NSUbiquitousKeyValueStore.default.synchronize()
     }
     
     public static nonisolated func set<R>(_ newValue: Value, forKey key: String)
     where Value == R?, R: RawRepresentable, R.RawValue: UserDefaultsPropertyListValue
     {
         NSUbiquitousKeyValueStore.default.set(newValue?.rawValue, forKey: key)
+        NSUbiquitousKeyValueStore.default.synchronize()
     }
     
     public static nonisolated func set(_ newValue: Value, forKey key: String)
     where Value: UserDefaultsPropertyListValue
     {
         NSUbiquitousKeyValueStore.default.set(newValue, forKey: key)
+        NSUbiquitousKeyValueStore.default.synchronize()
     }
 
     public static nonisolated func set<R>(_ newValue: Value, forKey key: String)
     where Value == R?, R: UserDefaultsPropertyListValue
     {
         NSUbiquitousKeyValueStore.default.set(newValue, forKey: key)
+        NSUbiquitousKeyValueStore.default.synchronize()
     }
 }
 
