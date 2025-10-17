@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum UbiquitousKeyValueStoreChangeReasonAction: String {
+public enum UbiquitousKeyValueStoreChangeReasonAction: String, Sendable {
     case defaultValue
     case cachedValue
     case cloudValue

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum UbiquitousKeyValueStoreError: Error {
+public enum UbiquitousKeyValueStoreError: Error, Sendable {
     case SelfReferenceRemoved
 }

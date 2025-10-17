@@ -17,7 +17,7 @@ extension ObservableUserDefaultsMacros: MemberMacro {
         in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
         
-        guard let identifier = declaration.asProtocol(NamedDeclSyntax.self) else { return [] }
+        guard let identifier = declaration.asProtocol((any NamedDeclSyntax).self) else { return [] }
         
         let className = IdentifierPatternSyntax(identifier: .init(stringLiteral: "\(identifier.name.trimmed)"))
         
@@ -42,9 +42,9 @@ extension ObservableUserDefaultsMacros: MemberMacro {
         
         let userDefaultStore: DeclSyntax
         
-        if let storeDefined = declaration.memberBlock.members.filter(\.isUserDefaultsStoreVariable).first?.as(MemberBlockItemSyntax.self),
+        if let storeDefined = declaration.memberBlock.members.filter(\.isUserDefaultsStoreVariable).first,
            let storeVarIdentifier = storeDefined.decl.as(VariableDeclSyntax.self)?
-                                                .bindings.as(PatternBindingListSyntax.self)?
+                                                .bindings
                                                 .first?.pattern.as(IdentifierPatternSyntax.self)?
                                                 .identifier
         {
@@ -79,7 +79,7 @@ extension ObservableUserDefaultsMacros: MemberAttributeMacro {
         
         guard let className = declaration.as(ClassDeclSyntax.self)?.name.trimmed,
               let memberName = member.as(VariableDeclSyntax.self)?
-                                     .bindings.as(PatternBindingListSyntax.self)?
+                                     .bindings
                                      .first?.pattern.as(IdentifierPatternSyntax.self)?
                                      .identifier.trimmed
         else { return [] }

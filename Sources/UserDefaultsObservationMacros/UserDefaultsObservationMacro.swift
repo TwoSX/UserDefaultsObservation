@@ -19,7 +19,7 @@ public enum ObservableUserDefaultsError: Error, LocalizedError {
 
 @main
 struct UserDefaultsObservationPlugin: CompilerPlugin {
-    let providingMacros: [Macro.Type] = [
+    let providingMacros: [any Macro.Type] = [
         ObservableUserDefaultsMacros.self,
         ObservableUserDefaultsPropertyMacros.self,
         ObservableUserDefaultsIgnoredMacros.self,

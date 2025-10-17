@@ -5,10 +5,10 @@
 //  Created by Taylor Geisse on 7/9/23.
 //
 
-import Foundation
+public import Foundation
 
 // MARK: - Protocol indiciating supported types
-public protocol UserDefaultsPropertyListValue {}
+public protocol UserDefaultsPropertyListValue: Sendable {}
 
 extension NSData: UserDefaultsPropertyListValue {}
 extension Data: UserDefaultsPropertyListValue {}

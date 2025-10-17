@@ -16,7 +16,7 @@ internal extension DeclSyntaxProtocol {
             return false
         }
         
-        if let hasAttribute = property.attributes.as(AttributeListSyntax.self)?
+        if let hasAttribute = property.attributes
                                       .first?.as(AttributeSyntax.self)?.attributeName.trimmedDescription {
             
             let skipAttributes = MacroIdentifiers.allCases

@@ -10,14 +10,14 @@ import SwiftSyntax
 extension LabeledExprListSyntax.Element {
     func getString() -> TokenSyntax? {
         self.expression.as(StringLiteralExprSyntax.self)?
-            .segments.as(StringLiteralSegmentListSyntax.self)?
+            .segments
             .first?.as(StringSegmentSyntax.self)?
             .content
     }
     
     func getMemberIdentifier() -> String? {
         self.expression.as(MemberAccessExprSyntax.self)?
-            .declName.as(DeclReferenceExprSyntax.self)?
+            .declName
             .baseName
             .text
     }

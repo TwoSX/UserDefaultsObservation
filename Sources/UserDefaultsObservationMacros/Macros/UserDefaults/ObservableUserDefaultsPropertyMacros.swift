@@ -18,8 +18,7 @@ public struct ObservableUserDefaultsPropertyMacros: AccessorMacro {
               let binding = property.bindings.first,
               let identifier = binding.pattern.as(IdentifierPatternSyntax.self),
               binding.accessorBlock == nil,
-              let key = node.as(AttributeSyntax.self)?
-                            .arguments?.as(LabeledExprListSyntax.self)?.first?
+              let key = node.arguments?.as(LabeledExprListSyntax.self)?.first?
                             .expression.as(StringLiteralExprSyntax.self)?
                             .segments.first?.as(StringSegmentSyntax.self)?.content
         else { return [] }

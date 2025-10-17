@@ -7,12 +7,13 @@
 
 import Foundation
 
-public class UbiquitousKeyValueStoreUtility {
+public class UbiquitousKeyValueStoreUtility: @unchecked Sendable {
     // MARK: - Typealiases
     public typealias UbiquitousKVSKey              = String
     public typealias UbiquitousKVSReasonKey        = Int
     public typealias UbiquitousKVSUpdateCallback   = (UbiquitousKVSReasonKey) throws -> Void
     
+    private let queue = DispatchQueue(label: "com.userdefaultsobservation.ubiquitouskeyvaluestore")
     private var updateCallbacks: [UbiquitousKVSKey: UbiquitousKVSUpdateCallback] = [:]
     private var cachedUpdates: [UbiquitousKVSKey: [UbiquitousKVSReasonKey]] = [:]
     private var observerAdded = false
@@ -42,8 +43,11 @@ public class UbiquitousKeyValueStoreUtility {
     
     // MARK: - Update Callback Registration
     public func registerUpdateCallback(forKey key: String, callback: @escaping UbiquitousKVSUpdateCallback) {
-        updateCallbacks[key] = callback
-        processCache(forKey: key)
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            self.updateCallbacks[key] = callback
+            self.processCache(forKey: key)
+        }
     }
     
     private func processCache(forKey key: String) {
@@ -58,7 +62,9 @@ public class UbiquitousKeyValueStoreUtility {
         guard let reasonForChange = userInfo[NSUbiquitousKeyValueStoreChangeReasonKey] as? Int else { return }
         guard let keys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String] else { return }
         
-        keys.forEach { executeUpdateCallback(forKey: $0, reason: reasonForChange) }
+        queue.async {
+            keys.forEach { self.executeUpdateCallback(forKey: $0, reason: reasonForChange) }
+        }
     }
     
     private func executeUpdateCallback(forKey key: UbiquitousKVSKey, reason: UbiquitousKVSReasonKey) {

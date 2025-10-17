@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - NSUbiquitousKeyValueStore Wrapper
-public struct UbiquitousKeyValueStoreWrapper<Value> {
+public struct UbiquitousKeyValueStoreWrapper<Value>: Sendable {
     private init() {}
     
     public static nonisolated func castAnyValue(_ anyValue: Any?, defaultValue: Value) -> Value

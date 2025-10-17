@@ -5,10 +5,10 @@
 //  Created by Taylor Geisse on 7/9/23.
 //
 
-import Foundation
+public import Foundation
 
 // MARK: - UserDefautls Wrapper
-public struct UserDefaultsWrapper<Value> {
+public struct UserDefaultsWrapper<Value>: Sendable {
     private init() {}
     
     // MARK: - Get Values
